@@ -1,0 +1,109 @@
+// // // Assuming you have routes and controllers set up, you can use the service like this:
+// // const CartService = require("../services/cart.services");
+
+// // // Inside a controller or a route handler:
+// // const cartId = req.params.cartId;
+// // const productId = req.params.cartId;
+
+// // try {
+// //   const updatedCart = CartService.addToCart(cartId, productId);
+// //   res.json(updatedCart);
+// // } catch (error) {
+// //   res.status(500).json({ error: "Internal Server Error" });
+// // }
+
+// const { response } = require("express");
+// const cartModel = require("../models/cart.model");
+
+// class CartService {
+//   // creating a fun to handle adding products
+//   static async addToCart(userId) {
+//     try {
+//       const { cartItem, quantity } = req.body;
+//       const cart = new cartModel.findOne({ userId });
+//       // checking if the product is already added to
+//       //the cart, if so increment the quantity by 1 else add it to the cart
+//       if (cart) {
+//         const exixtinProduct = cart.product.find(
+//           (product) => product.cartItem.toString() === cartItem
+//         );
+
+//         if (exixtinProduct) {
+//           exixtinProduct.quantity += 1;
+//         }
+//       } else {
+//         cart.products.push({ cartItem, quantity: 1 });
+//       }
+
+//       await cart.save();
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
+//   static async getCartItem(userId) {
+//     try {
+//       const cart = cartModel.find(userId);
+//       res.status(200).json(cart);
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
+
+//   static async deleteCartItem(cartItemId) {
+//     try {
+//       const deletecartItem = cartModel.findByIdAndUpdate({
+//         "products._id": cartItemId,
+//       });
+//       res.status(200).json(cart);
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
+// }
+// module.exports = CartService;
+
+// exports.removeFromCart = async (req, res) => {
+//   const { cartItemId } = req.params.cartItem;
+//   try {
+//     const cart = await cartService.deleteCartItem(cartItemId);
+//     // Find the index of the item with the specified ID in the cart
+//     const itemIndex = cart.findIndex((item) => item.id === cartItemId);
+
+//     if (itemIndex !== -1) {
+//       // Remove the item from the cart if it exists
+//       cart.splice(itemIndex, 1);
+
+//       res.status(200).json({ message: "Item deleted successfully", cart });
+//       return true;
+//     } else {
+//       res.status(404).json({ message: "Item not found in the cart" });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//     return false;
+//   }
+// };
+
+// const Joi = require("@hapi/joi");
+// const httpStatus = require("http-status");
+// const pick = require("../utils/pick");
+// const ApiError = require("../utils/ApiError");
+
+// const validate = (schema) => (req, res, next) => {
+//   const validSchema = pick(schema, ["params", "query", "body"]);
+//   const object = pick(req, Object.keys(validSchema));
+//   const { value, error } = Joi.compile(validSchema)
+//     .prefs({ errors: { label: "key" }, abortEarly: false })
+//     .validate(object);
+
+//   if (error) {
+//     const errorMessage = error.details
+//       .map((details) => details.message)
+//       .join(", ");
+//     return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
+//   }
+//   Object.assign(req, value);
+//   return next();
+// };
+
+// module.exports = validate;

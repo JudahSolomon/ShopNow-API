@@ -1,0 +1,3 @@
+create token verification middleware
+move logic from controllers to service file
+refactor the routes
